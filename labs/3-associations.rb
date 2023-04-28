@@ -14,11 +14,45 @@ Activity.destroy_all
 #   activity data in the database.  Afterwards, display a
 #   single salesperson's activity data:
 
+
 # 1. insert 3 rows in the activities table with relationships to
 # a single salesperson and 2 different contacts
 
+jacky = Salesperson.find_by({"first_name" => "Jacqueline"})
+tim_contact = Contact.find_by({"first_name" => "Tim"})
+lala_contact = Contact.find_by({"first_name" => "Lala"})
+
+new_activity = Activity.new
+new_activity["salesperson_id"] = jacky["id"]
+new_activity["contact_id"] = tim_contact["id"]
+new_activity["note"] = "hi this is the first activity"
+new_activity.save
+
+new_activity2 = Activity.new
+new_activity2["salesperson_id"] = jacky["id"]
+new_activity2["contact_id"] = lala_contact["id"]
+new_activity2["note"] = "hi this is the second activity"
+new_activity2.save
+
+new_activity3 = Activity.new
+new_activity3["salesperson_id"] = jacky["id"]
+new_activity3["contact_id"] = lala_contact["id"]
+new_activity3["note"] = "hi this is the third activity"
+new_activity3.save
+
+
 # 2. Display all the activities between the salesperson used above
 # and one of the contacts (sample output below):
+activities = Activity.where({
+    "salesperson_id" => jacky["id"],
+    "contact_id" => lala_contact["id"]
+})
+
+
+puts "Activities between #{jacky["first_name"]} and #{lala_contact["first_name"]}:"
+for activity in activities
+    puts " = #{activity["note"]}"
+end
 
 # ---------------------------------
 # Activities between Ben and Tim Cook:
